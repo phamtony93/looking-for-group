@@ -1,0 +1,22 @@
+{
+  "name": "hello-world",
+  "version": "1.0.0",
+  "description": "Hello world with express and node.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "OSU",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.13.2",
+    "express-handlebars": "^2.0.1",
+    "express-session": "^1.11.3",
+    "forever": "^0.15.3",
+    "mysql": "^2.8.0",
+    "passport": "^0.4.0",
+    "passport-facebook": "^3.0.0"
+  }
+}
