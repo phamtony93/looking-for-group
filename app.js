@@ -67,9 +67,6 @@ app.use(session({ secret: 'keyboard cat',
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
-
 app.get('/',function(req,res){
 	res.render('login');
 });
@@ -78,61 +75,23 @@ app.get('/account', ensureAuthenticated, function(req, res){
 	res.render('account', { user: req.user });
   });
   
-  app.get('/auth/facebook', passport.authenticate('facebook',{scope:'email'}));
+app.get('/auth/facebook', passport.authenticate('facebook',{scope:'email'}));
   
+app.get('/auth/facebook/callback',
+passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
+function(req, res) {
+  res.redirect('/');
+});
   
-  app.get('/auth/facebook/callback',
-	passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
-	function(req, res) {
-	  res.redirect('/');
-	});
+app.get('/logout', function(req, res){
+  req.logout();
+  res.redirect('/');
+});
   
-  app.get('/logout', function(req, res){
-	req.logout();
-	res.redirect('/');
-  });
-  
-  
-  function ensureAuthenticated(req, res, next) {
-	if (req.isAuthenticated()) { return next(); }
-	res.redirect('/login')
-  }
-
-// app.use('/actors', require('./actors.js'));
-
-// //app.get('/actors',function(req,res){
-// //	res.render('actors');
-// //});
-
-// app.use('/movies', require('./movies.js'));
-
-// //app.get('/movies',function(req,res){
-// //	res.render('movies');
-// //});
-
-// app.use('/genres', require('./genres.js'));
-
-// //app.get('/genres',function(req,res){
-// //	res.render('genres');
-// //});
-
-// app.use('/ratings', require('./ratings.js'));
-
-// //app.get('/ratings',function(req,res){
-// //	res.render('ratings');
-// //});
-
-// app.use('/producers', require('./producers.js'));
-
-// //app.get('/producers',function(req,res){
-// //	res.render('producers');
-// //});
-
-// app.use('/rating-agencies', require('./ratingAgencies.js'));
-
-// //app.get('/rating-agencies',function(req,res){
-// //	res.render('rating-agencies');
-// //});
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) { return next(); }
+  res.redirect('/login')
+}
 
 app.use(function(req,res){
 	res.status(404);
