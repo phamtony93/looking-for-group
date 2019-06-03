@@ -3,7 +3,7 @@
 <input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
 </div>
 
-<form>
+<form action="/add" method="POST">
 	<fieldset>
 		<legend>Create Event</legend>
 		<div>
@@ -46,7 +46,7 @@
 			<input type="number" name="upperAge" id="upperAge">
 			<br>
 			<label>Gender:</label>
-			<select id="gender">
+			<select id="gender" name="gender">
 				<option val="0">Female</option>
 				<option val="1">Male</option>
 				<option val="2">Both</option>

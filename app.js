@@ -202,13 +202,12 @@ app.post('/add', function (req, res) {
 	else if (req.body.Gender == 1) {
 		gender = "Male";
 	}
-	var params = [body.Title, body.Description, body.Address, body.City, body.State, body.ZIP, body.startDate, body.endDate, body.lowerAge, body.upperAge, body.Gender];
-	pool.query("INSERT INTO events(`title`, `description`, `address`, `city`, `state`, `zip`, `startDate`, `endDate`, `lowerAge`, `upperAge`, `gender`) VALUES (?,?,?,?,?,?,?,?,?,?,?)", params, function (err, result) {
+	var params = [body.eventTitle, body.eventDescription, body.eventAddress, body.eventCity, body.eventState, body.eventZIP, body.startDate, body.endDate, body.lowerAge, body.upperAge, body.Gender];
+	mysql.pool.query("INSERT INTO events(`title`, `description`, `address`, `city`, `state`, `zip`, `startDate`, `endDate`, `lowerAge`, `upperAge`, `gender`) VALUES (?,?,?,?,?,?,?,?,?,?,?)", params, function (err, result) {
 		if (err) {
 			throw err;
 		}
-		var tableId = { 'id': result.insertId };
-		res.send(tableId);
+		res.redirect('/home')
 	});
 });
 
