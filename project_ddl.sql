@@ -1,4 +1,6 @@
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS users_events;
 
 CREATE TABLE users (
 	id INT NOT NULL AUTO_INCREMENT,
@@ -12,11 +14,6 @@ CREATE TABLE users (
 	password VARCHAR(64) NOT NULL,
 	PRIMARY KEY (id)
 );
-	
-INSERT INTO users (first_name, last_name, email, city, state, bday, gender, password)
-VALUES ('Some', 'Person', 'test@test.com', 'seattle', 'WA', '1/1/1990', 'M', 'password');
-
-DROP TABLE IF EXISTS events;
 
 CREATE TABLE events(
 	id INT PRIMARY KEY AUTO_INCREMENT,
@@ -33,4 +30,12 @@ CREATE TABLE events(
 	upperAge INT,
 	lowerAge INT,
 	gender VARCHAR(16)
+);
+
+CREATE TABLE users_events(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	user_id INT NOT NULL,
+	event_id INT NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+	FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE
 );
