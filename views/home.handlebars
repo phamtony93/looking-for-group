@@ -1,8 +1,7 @@
-<table>
-<tr>
-  {{user.first_name}} {{user.last_name}} is logged in.
-</tr>
-</table>
+<div align="right">
+	{{user.first_name}} {{user.last_name}}
+<input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
+</div>
 
 <form>
 	<fieldset>
@@ -72,6 +71,6 @@
 	{{/each}}
 </table>
 
-<input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
+
 
 <script type="text/javascript" src="/table.js"></script>
