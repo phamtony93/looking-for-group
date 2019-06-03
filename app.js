@@ -263,6 +263,20 @@ app.get('/registration', function (req, res) {
 	res.render('registration');
 });
 
+app.post('/registration', (req, res) => {
+	console.log(req.body)
+	mysql.pool.query("INSERT INTO users (first_name, last_name, email, city, state, bday, gender, password) VALUES (?,?,?,?,?,?,?,?)",
+	[req.body.first_name, req.body.last_name, req.body.email, req.body.city, req.body.state, req.body.bday, req.body.gender, req.body.password],
+	(err, rows, fields) => {
+		if (err)
+		{
+			throw err;
+		}
+		res.redirect('/login')
+	})
+	
+})
+
 // app.use('/registration', require('./registration.js'));
 
 // app.get('/account', ensureAuthenticated, function (req, res) {
