@@ -22,21 +22,20 @@ var mysql = require('./dbcon.js');
 passport.use(new LocalStrategy(
 	{ usernameField: 'email' },
 	(email, password, done) => {
-		console.log("in local strategy")
-		console.log(email + ', ' + password)
+		console.log("in LocalStrategy")
 		var context = {}
 		var callbackCount = 0;
 		getUserByEmail(email, mysql, context, complete)
 		function complete() {
 			callbackCount++;
 			if (callbackCount >= 1) {
-				console.log("getUserByEmail received")
 				if (!context.user) {
 					return done(null, false, { message: 'Invalid credentials.\n' });
 				}
 				if (password !== context.user.password) {
 					return done(null, false, { message: 'Invalid credentials.\n' });
 				}
+				console.log("Successful Login")
 				return done(null, context.user, { message: 'Successful login \n' });
 			}
 		}
@@ -65,10 +64,10 @@ passport.deserializeUser((id, done) => {
 // Create server
 const app = express();
 app.use(express.static(__dirname + '/public'));
-var port = 23210;
+var port = 23241;
 app.set('port', port);
 app.listen(app.get('port'), function () {
-	console.log('Express started on http://localhost:' + app.get('port') + '; press CTRL + C to terminate')
+	console.log('Express started on flip1.engr.oregonstate.edu:' + app.get('port') + '; press CTRL + C to terminate')
 });
 
 // Add & configure middleware
@@ -77,10 +76,6 @@ app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(session({
-	genid: (req) => {
-		console.log("inside session middleware")
-		console.log(req.sessionID)
-	},
 	store: new FileStore(),
 	secret: 'keyboard cat',
 	resave: true,
@@ -146,26 +141,26 @@ app.get('/home', (req, res) => {
 		context = {}
 		callbackCount = 0
 		getUserById(req.session.passport.user, mysql, context, complete)
-		function complete() {
-			callbackCount++
-			if (callbackCount >= 1) {
-				console.log(context)
-				res.render('home', context)
-			}
-		}
-
+		
 		// get events info
-		var table = {};
-		table.values = [];
-		pool.query('SELECT * FROM events', function (err, rows, fields) {
+		context.values = [];
+		mysql.pool.query('SELECT * FROM events', function (err, rows, fields) {
 			if (err) {
 				throw err;
 			}
 			for (var events in rows) {
-				table.values.push({ 'title': rows[events].title, 'id': rows[events].id });
+				context.values.push({ 'title': rows[events].title, 'id': rows[events].id });
 			}
-			res.render('home', table);
+			complete()
 		});
+		
+		function complete() {
+			callbackCount++
+			if (callbackCount >= 2) {
+				console.log(context)
+				res.render('home', context)
+			}
+		}
 
 	} else {
 		console.log("is not authenticated")
