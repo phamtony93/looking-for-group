@@ -71,11 +71,11 @@ app.get('/',function(req,res){
 	res.render('login');
 });
 
-// app.use('/registration', require('./registration.js'));
+app.use('/registration', require('./registration.js'));
 
-app.get('/registration',function(req,res){
-	res.render('registration');
-});
+// app.get('/registration',function(req,res){
+// 	res.render('registration');
+// });
 
 
 app.get('/account', ensureAuthenticated, function(req, res){
