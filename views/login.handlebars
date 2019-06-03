@@ -1,26 +1,47 @@
-<div id="fb-root"></div>
-<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3&appId=270439150514532&autoLogAppEvents=1"></script>
-	<div class="text-center">
+<div class="text-center">
+	<form action="/login" method="post">
 		<div>
-			<form class="form-signin">
-				<img src="/logo.png" 
-						class="mb-4" alt width="150" height="180">
-				<h3>Please sign in</h3>
-				<label for="inputEmail" class="sr-only">Email address</label>
-				<input type="email" id="inputEmail" placeholder="Email address" required autofocus><br>
-				<label for="inputPassword" class="sr-only">Password</label>
-				<input type="password" id="inputPassword" placeholder="Password" required><br><br>
-				<button class="btn btn-lg btn-danger" type="submit">Sign in</button><br>
-				<label>
-					<input type="checkbox">	Remember me
-				</label><br><br>
-			</form>
+			<label>Email:</label>
+			<input type="text" name="email" />
+		</div>
+		<div>
+			<label>Password:</label>
+			<input type="password" name="password" />
+		</div>
+		<div>
+			<input type="submit" value="Log In" />
+		</div>
+	</form>
+	<div>
+		Need an account? <a href="/registration">Sign Up Here!</a>
+	</div>
+</div>
 
-			<div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with" data-auto-logout-link="false" data-use-continue-as="false"></div><br>
-	
-			<div>
-				Need an acount? <a href="/registration">Sign up</a>
-			</div>
+
+{{!-- <div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+	src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3&appId=270439150514532&autoLogAppEvents=1"></script>
+<div class="text-center">
+	<div>
+		<form class="form-signin">
+			<img src="/logo.png" class="mb-4" alt width="150" height="180">
+			<h3>Please sign in</h3>
+			<label for="inputEmail" class="sr-only">Email address</label>
+			<input type="email" id="inputEmail" placeholder="Email address" required autofocus><br>
+			<label for="inputPassword" class="sr-only">Password</label>
+			<input type="password" id="inputPassword" placeholder="Password" required><br><br>
+			<button class="btn btn-lg btn-danger" type="submit">Sign in</button><br>
+			<label>
+				<input type="checkbox"> Remember me
+			</label><br><br>
+		</form>
+
+		<div class="fb-login-button" data-width="" data-size="large" data-button-type="continue_with"
+			data-auto-logout-link="false" data-use-continue-as="false"></div><br>
+
+		<div>
+			Need an acount? <a href="/registration">Sign up</a>
 		</div>
 	</div>
 </div>
+</div> --}}
