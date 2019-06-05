@@ -1,0 +1,84 @@
+<div class="topnav p-3" align="right">
+		{{user.first_name}} {{user.last_name}}
+    <a href="/home"><button class="btn btn-primary" type="button">Home</button></a>
+    <button class="btn btn-primary" type="button">Profile</button>
+    <a href="/create-event"><button class="btn btn-primary" type="button">Create Event</button></a>
+	<input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
+</div>
+
+{{!-- <div align="right">
+	{{user.first_name}} {{user.last_name}}
+<input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
+</div> --}}
+
+<form action="/add" method="POST">
+	<fieldset>
+		<legend>Create Event</legend>
+		<div>
+			<br>
+			<label>Event Title: </label>
+			<input type="text" name="eventTitle" id="eventTitle">
+			<br>
+			<br>
+			<label>Location</label>
+			<br>
+			<label>Address: </label>
+			<input type="text" name="eventAddress" id="eventAddress">
+			<label>City: </label>
+			<input type="text" name="eventCity" id="eventCity">
+			<label>State: </label>
+			<input type="text" name="eventState" id="eventState">
+			<label>ZIP: </label>
+			<input type="text" name="eventZIP" id="eventZIP">
+			<br>
+			<br>
+			<label>Dates</label>
+			<br>
+			<label>Start: </label>
+			<input type="date" name="startDate" id="startDate">
+			<label>End: </label>
+			<input type="date" name="endDate" id="endDate">
+			<br>
+			<br>
+			<label>Description </label>
+			<br>
+			<input type="text" name="eventDescription" id="eventDescription">
+			<br>
+			<br>
+			<label>Specifications</label>
+			<br>
+			<label>Age </label>
+			<label>From: </label>
+			<input type="number" name="lowerAge" id="lowerAge">
+			<label>To: </label>
+			<input type="number" name="upperAge" id="upperAge">
+			<br>
+			<label>Gender:</label>
+			<select id="gender" name="gender">
+				<option val="0">Female</option>
+				<option val="1">Male</option>
+				<option val="2">Both</option>
+			</select>
+			<br><br>
+			<input type="submit" id="eventSubmit" value="Add Event">
+			<div>
+	</fieldset>
+</form>
+<br>
+<table style="width:100%" id="eventTable" border="1">
+	<tr>
+		<th>Created Events</th>
+	</tr>
+	{{#each values}}
+	<tr>
+		<td>{{this.title}}</td>
+		<td>
+			<form id="{{this.id}}"><button type="button" onClick="updateRow(this)">View</button></form>
+		</td>
+	</tr>
+	{{/each}}
+</table>
+
+
+
+<script type="text/javascript" src="/table.js"></script>

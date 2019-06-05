@@ -104,7 +104,7 @@ app.get('/', (req, res) => {
 	if (req.isAuthenticated()) {
 		res.redirect('/home')
 	} else {
-		res.redirect('/login')
+		res.redirect('/login')		//add an error message here
 	}
 })
 
@@ -133,6 +133,15 @@ app.get('/logout', function (req, res) {
 });
 
 app.get('/home', (req, res) => {
+	if(req.isAuthenticated()) {
+		res.render('home')
+	} else {
+		res.render('login')
+	}
+})
+
+
+app.get('/create-event', (req, res) => {
 	console.log(req.session)
 	console.log("GET home")
 	if (req.isAuthenticated()) {
@@ -158,7 +167,7 @@ app.get('/home', (req, res) => {
 			callbackCount++
 			if (callbackCount >= 2) {
 				console.log(context)
-				res.render('home', context)
+				res.render('create-event', context)
 			}
 		}
 
@@ -275,6 +284,7 @@ app.post('/registration', (req, res) => {
 	})
 	
 })
+
 
 // app.use('/registration', require('./registration.js'));
 
