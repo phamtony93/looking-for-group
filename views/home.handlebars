@@ -6,9 +6,40 @@
 	<input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
 </div>
 
-<div class="container p-5">
+			<div class="container p-5">
+				<div class="row">
+						<input type="text" class="form-control col-sm-11" type="search" placeholder="Search" align="center">
+						<button class="btn-outline-secondary col-sm-1" type="submit">Search</button>
+				</div>
+			</div>
+
+<div class="container">
 	<div class="row">
-			<input type="text" class="form-control col-sm-11" type="search" placeholder="Search" align="center">
-			<button class="btn-outline-secondary col-sm-1" type="submit">Search</button>
+		<div class="col-md-1" align="left">
+			Filter Section?
+		</div>
+		<div class="col-md-11">
+			{{!-- <div class="container">
+				<div class="row">
+					<div class="col"> --}}
+						<table style="width:100%" id="eventTable" border="1" class="table">
+							<tr>
+								<th>Created Events</th>
+							</tr>
+							{{#each values}}
+							<tr>
+								<td>{{this.title}}</td>
+								<td>
+									<form id="{{this.id}}"><button type="button" onClick="updateRow(this)">View</button></form>
+								</td>
+							</tr>
+							{{/each}}
+						</table>
+					{{!-- </div>
+				</div>
+			</div> --}}
+		</div>
 	</div>
 </div>
+
+<script type="text/javascript" src="/table.js"></script>

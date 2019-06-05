@@ -132,10 +132,45 @@ app.get('/logout', function (req, res) {
 	res.redirect('/');
 });
 
+// app.get('/home', (req, res) => {
+// 	if(req.isAuthenticated()) {
+
+// 		res.render('home')
+// 	} else {
+// 		res.render('login')
+// 	}
+// })
+
 app.get('/home', (req, res) => {
-	if(req.isAuthenticated()) {
-		res.render('home')
+	if (req.isAuthenticated()) {
+		// get user info
+		console.log("is authenticated")
+		context = {}
+		callbackCount = 0
+		getUserById(req.session.passport.user, mysql, context, complete)
+		
+		// get events info
+		context.values = [];
+		mysql.pool.query('SELECT * FROM events', function (err, rows, fields) {
+			if (err) {
+				throw err;
+			}
+			for (var events in rows) {
+				context.values.push({ 'title': rows[events].title, 'id': rows[events].id });
+			}
+			complete()
+		});
+		
+		function complete() {
+			callbackCount++
+			if (callbackCount >= 2) {
+				console.log(context)
+				res.render('home', context)
+			}
+		}
+
 	} else {
+		console.log("is not authenticated")
 		res.render('login')
 	}
 })
@@ -286,7 +321,7 @@ app.post('/registration', (req, res) => {
 })
 
 
-// app.use('/registration', require('./registration.js'));
+app.use('/registration', require('./registration.js'));
 
 // app.get('/account', ensureAuthenticated, function (req, res) {
 // 	res.render('account', { user: req.user });
