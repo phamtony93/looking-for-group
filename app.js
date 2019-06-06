@@ -151,16 +151,39 @@ app.get('/home', (req, res) => {
 		
 		// get events info
 		context.values = [];
-		mysql.pool.query('SELECT * FROM events', function (err, rows, fields) {
-			if (err) {
-				throw err;
-			}
-			for (var events in rows) {
-				context.values.push({ 'title': rows[events].title, 'id': rows[events].id });
-			}
-			complete()
-		});
-		
+		if (req.query.city != null && req.query.state != null) {
+			mysql.pool.query('SELECT * FROM events WHERE city=? and state=?', [req.query.city, req.query.state], function (err, rows, fields) {
+				if (err) {
+					throw err;
+				}
+				for (var events in rows) {
+					context.values.push({ 'title': rows[events].title, 'id': rows[events].id });
+				}
+				complete()
+			});
+		} else if (req.query.search != null && req.query.search != "") {
+			console.log(req.query.search)
+			mysql.pool.query('SELECT * FROM events WHERE title LIKE ? OR description LIKE ?', ['%'+req.query.search+'%', '%'+req.query.search+'%'], function (err, rows, fields) {
+				if (err) {
+					throw err;
+				}
+				for (var events in rows) {
+					context.values.push({ 'title': rows[events].title, 'id': rows[events].id });
+				}
+				complete()
+			});
+		} else {
+			mysql.pool.query('SELECT * FROM events', function (err, rows, fields) {
+				if (err) {
+					throw err;
+				}
+				for (var events in rows) {
+					context.values.push({ 'title': rows[events].title, 'id': rows[events].id });
+				}
+				complete()
+			});
+		}
+			
 		function complete() {
 			callbackCount++
 			if (callbackCount >= 2) {
