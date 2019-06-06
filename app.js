@@ -64,7 +64,7 @@ passport.deserializeUser((id, done) => {
 // Create server
 const app = express();
 app.use(express.static(__dirname + '/public'));
-var port = 5861;
+var port = 23241;
 app.set('port', port);
 app.listen(app.get('port'), function () {
 	console.log('Express started on flip1.engr.oregonstate.edu:' + app.get('port') + '; press CTRL + C to terminate')
