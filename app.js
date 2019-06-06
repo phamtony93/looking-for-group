@@ -64,7 +64,7 @@ passport.deserializeUser((id, done) => {
 // Create server
 const app = express();
 app.use(express.static(__dirname + '/public'));
-var port = 23241;
+var port = 5861;
 app.set('port', port);
 app.listen(app.get('port'), function () {
 	console.log('Express started on flip1.engr.oregonstate.edu:' + app.get('port') + '; press CTRL + C to terminate')
@@ -237,7 +237,7 @@ app.get('/create-event', (req, res) => {
 
 app.get('/reset-table', function (req, res, next) {
 	var context = {};
-	pool.query("DROP TABLE IF EXISTS events", function (err) {
+	mysql.pool.query("DROP TABLE IF EXISTS events", function (err) {
 		var createString = "CREATE TABLE events(" +
 			"id INT PRIMARY KEY AUTO_INCREMENT," +
 			"title VARCHAR(64) NOT NULL," +
@@ -253,7 +253,7 @@ app.get('/reset-table', function (req, res, next) {
 			"upperAge INT," +
 			"lowerAge INT," +
 			"gender VARCHAR(16))";
-		pool.query(createString, function (err) {
+		mysql.pool.query(createString, function (err) {
 			context.results = "Table reset";
 			res.render('home', context);
 		})
@@ -278,11 +278,11 @@ app.post('/add', function (req, res) {
 	});
 });
 
-app.get('/update', function (req, res) {
+app.get('/view', function (req, res) {
 	var id = req.query.id;
 	var table = {};
 	table.values = [];
-	pool.query('SELECT * FROM events WHERE id = ?', id, function (err, rows, fields) {
+	mysql.pool.query('SELECT * FROM events WHERE id = ?', id, function (err, rows, fields) {
 		if (err) {
 			throw err;
 		}
@@ -302,6 +302,34 @@ app.get('/update', function (req, res) {
 		}
 		console.log(Both, Female, Male);
 		table.values.push({ 'id': rows[0].id, 'title': rows[0].title, 'description': rows[0].description, 'address': rows[0].address, 'city': rows[0].city, 'state': rows[0].state, 'zip': rows[0].zip, 'startDate': startDate.format('YYYY-MM-DD'), 'endDate': endDate.format('YYYY-MM-DD'), 'upperAge': rows[0].upperAge, 'lowerAge': rows[0].lowerAge, 'both': Both, 'female': Female, 'male': Male });
+		res.render('view', table.values[0]);
+	})
+});
+
+app.get('/update', function (req, res) {
+	var id = req.query.id;
+	var table = {};
+	table.values = [];
+	mysql.pool.query('SELECT * FROM events WHERE id = ?', id, function (err, rows, fields) {
+		if (err) {
+			throw err;
+		}
+		var startDate = moment(rows[0].startDate);
+		var endDate = moment(rows[0].endDate);
+		var Both = 0;
+		var Female = 0;
+		var Male = 0;
+		if (rows[0].gender == "Both") {
+			Both = 1;
+		}
+		if (rows[0].gender == "Female") {
+			Female = 1;
+		}
+		if (rows[0].gender == "Male") {
+			Male = 1;
+		}
+		console.log(Both, Female, Male);
+		table.values.push({'id': rows[0].id, 'title': rows[0].title, 'description': rows[0].description, 'address': rows[0].address, 'city': rows[0].city, 'state': rows[0].state, 'zip': rows[0].zip, 'startDate': startDate.format('YYYY-MM-DD'), 'endDate': endDate.format('YYYY-MM-DD'), 'upperAge': rows[0].upperAge, 'lowerAge': rows[0].lowerAge, 'both': Both, 'female': Female, 'male': Male });
 		res.render('update', table.values[0]);
 	})
 });
@@ -316,7 +344,7 @@ app.get('/update-table', function (req, res) {
 		gender = "Male";
 	}
 	var params = [query.Title, query.Description, query.Address, query.City, query.State, query.ZIP, query.startDate, query.endDate, query.lowerAge, query.upperAge, gender, query.id];
-	pool.query("UPDATE events SET title=?, description=?, address=?, city=?, state=?, zip=?, startDate=?, endDate=?, lowerAge=?, upperAge=?, gender=? WHERE id=?", params, function (err, result) {
+	mysql.pool.query("UPDATE events SET title=?, description=?, address=?, city=?, state=?, zip=?, startDate=?, endDate=?, lowerAge=?, upperAge=?, gender=? WHERE id=?", params, function (err, result) {
 		if (err) {
 			throw err;
 		}
