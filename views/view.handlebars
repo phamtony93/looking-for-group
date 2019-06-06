@@ -1,0 +1,35 @@
+<div class="topnav p-3" align="right">
+    {{user.first_name}} {{user.last_name}}
+    <a href="/home"><button class="btn btn-primary" type="button">Home</button></a>
+    <button class="btn btn-primary" type="button">Profile</button>
+    <a href="/create-event"><button class="btn btn-primary" type="button">Create Event</button></a>
+  <input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
+</div>
+
+<table style="width:100%" id="eventTable" border="1" class="table">
+              <tr>
+                <th>{{title}}</th>
+              </tr>
+              <tr>
+                <td>ADDRESS: {{address}} {{city}} {{zip}}</td>
+              </tr>
+              <tr>
+                <td>START DATE: {{startDate}} to END DATE: {{endDate}}</td>
+              </tr>
+              <tr>
+                <td>DESCRIPTION: {{description}}</td>
+              </tr>
+              <tr>
+                <td>AGE RANGE: {{lowerAge}} to {{upperAge}}</td>
+              </tr>
+              <tr>
+                <td> GENDER: {{#if both}}Both{{else}}{{#if male}}Male{{else}}Female{{/if}}{{/if}}</td>
+              </tr>
+              <tr>
+                <td>
+                  <form id="{{id}}"><button type="button" onClick="updateRow(this)">Update</button></form>
+                </td>
+              </tr>
+            </table>
+
+<script type="text/javascript" src="/table.js"></script>
