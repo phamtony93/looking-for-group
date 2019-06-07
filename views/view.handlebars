@@ -25,10 +25,9 @@
               <tr>
                 <td> GENDER: {{#if both}}Both{{else}}{{#if male}}Male{{else}}Female{{/if}}{{/if}}</td>
               </tr>
-              <tr>
-                <td>
-                  <form id="{{id}}"><button type="button" onClick="updateRow(this)">Update</button></form>
-                </td>
+              <tr>{{#if poster}}<td>
+                  <form id="{{event_id}}"><button type="button" onClick="updateRow(this)">Update</button></form>
+                </td>{{/if}}
               </tr>
             </table>
 
