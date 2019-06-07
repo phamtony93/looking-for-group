@@ -30,4 +30,20 @@
               </tr>
             </table>
 
+{{#if poster}}
+<div>Event Requests</div>
+<table style="width:100%" id="requestTable" border="1" class="table">
+  <tr>
+    <th>User</th>
+    <th>Actions</th>
+  </tr>
+{{#each requests}}
+  <tr>
+    <td>{{this.user_id}}</td>
+    <td><a href="/accept_deny?user_id={{this.user_id}}&event_id={{event_id}}&accept=1"><button class="btn btn-primary" type="button">Accept</button></a><a href="/accept_deny?user_id={{this.user_id}}&event_id={{event_id}}&accept=0"><button class="btn btn-primary" type="button">Deny</button></a></td>
+  </tr>
+{{/each}}
+</table>
+{{/if}}
+
 <script type="text/javascript" src="/table.js"></script>
