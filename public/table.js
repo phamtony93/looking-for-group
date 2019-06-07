@@ -50,6 +50,11 @@ function updateRow(button) {
   window.location.href ="/update?id=" + id;
 }
 
+function joinRow(button) {
+  var id = button.parentNode.id;
+  window.location.href ="/request?id=" + id;
+}
+
 function eventUpdate() {
   var event = {Title:null, Description:null, Address:null, City:null, State:null, ZIP:null, startDate:null, endDate:null, lowerAge:null, upperAge:null, Gender:null};
   event.Title = document.getElementById('eventTitle').value;
