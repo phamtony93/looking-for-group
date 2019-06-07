@@ -64,7 +64,7 @@ passport.deserializeUser((id, done) => {
 // Create server
 const app = express();
 app.use(express.static(__dirname + '/public'));
-var port = 23241;
+var port = 5861;
 app.set('port', port);
 app.listen(app.get('port'), function () {
 	console.log('Express started on flip1.engr.oregonstate.edu:' + app.get('port') + '; press CTRL + C to terminate')
@@ -260,6 +260,7 @@ app.post('/add', function (req, res) {
 });
 
 app.get('/view', function (req, res) {
+		console.log("VIEW EVENT");
 		var id = req.query.id;
 		var table = {};
 		table.values = [];
@@ -284,12 +285,57 @@ app.get('/view', function (req, res) {
 			var poster = 0;
 			if (rows[0].user_id == req.session.passport.user) {
 				poster = 1;
+				console.log("POSTER QUERY");
+				mysql.pool.query('SELECT * FROM event_requests WHERE event_id = ?', id, function (err, rows2, fields) {
+					if (err) {
+						throw err;
+					}
+					table.values.push({ 'event_id': rows[0].id, 'title': rows[0].title, 'description': rows[0].description, 'address': rows[0].address, 'city': rows[0].city, 'state': rows[0].state, 'zip': rows[0].zip, 'startDate': startDate.format('YYYY-MM-DD'), 'endDate': endDate.format('YYYY-MM-DD'), 'upperAge': rows[0].upperAge, 'lowerAge': rows[0].lowerAge, 'both': Both, 'female': Female, 'male': Male, 'poster': poster, 'requests': rows2 });
+					res.render('view', table.values[0]);
+				});
 			}
-			table.values.push({ 'event_id': rows[0].id, 'title': rows[0].title, 'description': rows[0].description, 'address': rows[0].address, 'city': rows[0].city, 'state': rows[0].state, 'zip': rows[0].zip, 'startDate': startDate.format('YYYY-MM-DD'), 'endDate': endDate.format('YYYY-MM-DD'), 'upperAge': rows[0].upperAge, 'lowerAge': rows[0].lowerAge, 'both': Both, 'female': Female, 'male': Male, 'poster': poster });
-			console.log("VIEW EVENT");
-			console.log(req.session.passport.user);
-			res.render('view', table.values[0]);
+			else {
+				table.values.push({ 'event_id': rows[0].id, 'title': rows[0].title, 'description': rows[0].description, 'address': rows[0].address, 'city': rows[0].city, 'state': rows[0].state, 'zip': rows[0].zip, 'startDate': startDate.format('YYYY-MM-DD'), 'endDate': endDate.format('YYYY-MM-DD'), 'upperAge': rows[0].upperAge, 'lowerAge': rows[0].lowerAge, 'both': Both, 'female': Female, 'male': Male, 'poster': poster });
+				res.render('view', table.values[0]);
+			}
 		})
+});
+
+app.get('/request', function (req, res) {
+	console.log("REQUEST");
+	console.log(req.query);
+	var id = req.query.id;
+	mysql.pool.query("INSERT INTO event_requests(`user_id`, `event_id`) VALUES (?,?)", [req.session.passport.user, req.query.id], function (err, result) {
+			if (err) {
+				throw err;
+			}
+			res.redirect('/home')
+		});	
+});
+
+app.get('/accept_deny', function (req, res) {
+	console.log("ACCEPT/DENY");
+	console.log(req.query);
+	if (req.query.accept == 1) {
+		mysql.pool.query("INSERT INTO users_events(`user_id`, `event_id`) VALUES (?,?)", [req.query.user_id, req.query.event_id], function (err, result) {
+			if (err) {
+				throw err;
+			}
+		});
+		mysql.pool.query("DELETE FROM event_requests WHERE user_id = ? AND event_id", [req.query.user_id, req.query.event_id], function(err, result){
+	   		if(err){
+    			throw err;
+    		}
+  		});
+	}
+	else {
+		mysql.pool.query("DELETE FROM event_requests WHERE user_id = ? AND event_id", [req.query.user_id, req.query.event_id], function(err, result){
+	   		if(err){
+    			throw err;
+    		}
+  		});
+	}
+	res.redirect('/home')
 });
 
 app.get('/update', function (req, res) {
@@ -356,7 +402,6 @@ app.post('/registration', (req, res) => {
 	})
 	
 })
-
 
 app.use('/registration', require('./registration.js'));
 
