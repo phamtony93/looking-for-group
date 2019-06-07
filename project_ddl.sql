@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS events;
 DROP TABLE IF EXISTS users_events;
+DROP TABLE IF EXISTS event_requests;
 
 CREATE TABLE users (
 	id INT NOT NULL AUTO_INCREMENT,
@@ -30,11 +31,18 @@ CREATE TABLE events(
 	upperAge INT,
 	lowerAge INT,
 	gender VARCHAR(16),
-	user_id INT NOT NULL,
-	FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+	FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE
 );
 
 CREATE TABLE users_events(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	user_id INT NOT NULL,
+	event_id INT NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+	FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE
+);
+
+CREATE TABLE event_requests(
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	user_id INT NOT NULL,
 	event_id INT NOT NULL,
