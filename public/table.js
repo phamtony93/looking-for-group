@@ -50,7 +50,7 @@ function updateRow(button) {
   window.location.href ="/update?id=" + id;
 }
 
-function exerciseUpdate() {
+function eventUpdate() {
   var event = {Title:null, Description:null, Address:null, City:null, State:null, ZIP:null, startDate:null, endDate:null, lowerAge:null, upperAge:null, Gender:null};
   event.Title = document.getElementById('eventTitle').value;
   event.Description = document.getElementById('eventDescription').value;
