@@ -29,7 +29,9 @@ CREATE TABLE events(
 	endTime TIME,
 	upperAge INT,
 	lowerAge INT,
-	gender VARCHAR(16)
+	gender VARCHAR(16),
+	user_id INT NOT NULL,
+	FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE users_events(
