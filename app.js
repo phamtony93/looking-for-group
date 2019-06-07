@@ -147,7 +147,7 @@ app.get('/home', (req, res) => {
 		console.log("is authenticated")
 		context = {}
 		callbackCount = 0
-		getUserById(req.session.passport.user, mysql, context, complete)
+		getUserById(req.session.passport.user, mysql, context, complete);
 		
 		// get events info
 		context.values = [];
@@ -187,27 +187,27 @@ app.get('/home', (req, res) => {
 		function complete() {
 			callbackCount++
 			if (callbackCount >= 2) {
-				console.log(context)
-				res.render('home', context)
+				console.log(context);
+				res.render('home', context);
 			}
 		}
 
 	} else {
-		console.log("is not authenticated")
-		res.render('login')
+		console.log("is not authenticated");
+		res.render('login');
 	}
 })
 
 
 app.get('/create-event', (req, res) => {
 	console.log(req.session)
-	console.log("GET home")
+	console.log("GET create-event")
 	if (req.isAuthenticated()) {
 		// get user info
 		console.log("is authenticated")
 		context = {}
 		callbackCount = 0
-		getUserById(req.session.passport.user, mysql, context, complete)
+		getUserById(req.session.passport.user, mysql, context, complete);
 		
 		// get events info
 		context.values = [];
@@ -235,75 +235,61 @@ app.get('/create-event', (req, res) => {
 	}
 })
 
-app.get('/reset-table', function (req, res, next) {
-	var context = {};
-	mysql.pool.query("DROP TABLE IF EXISTS events", function (err) {
-		var createString = "CREATE TABLE events(" +
-			"id INT PRIMARY KEY AUTO_INCREMENT," +
-			"title VARCHAR(64) NOT NULL," +
-			"description VARCHAR(1024) NOT NULL," +
-			"address VARCHAR(64) NOT NULL," +
-			"city VARCHAR(64) NOT NULL," +
-			"state VARCHAR(32) NOT NULL," +
-			"zip VARCHAR(32) NOT NULL," +
-			"startDate DATE," +
-			"endDate DATE," +
-			"startTime TIME," +
-			"endTime TIME," +
-			"upperAge INT," +
-			"lowerAge INT," +
-			"gender VARCHAR(16))";
-		mysql.pool.query(createString, function (err) {
-			context.results = "Table reset";
-			res.render('home', context);
-		})
-	});
-});
-
 app.post('/add', function (req, res) {
-	var body = req.body;
-	var gender = "Both";
-	if (req.body.Gender == 0) {
-		gender = "Female";
-	}
-	else if (req.body.Gender == 1) {
-		gender = "Male";
-	}
-	var params = [body.eventTitle, body.eventDescription, body.eventAddress, body.eventCity, body.eventState, body.eventZIP, body.startDate, body.endDate, body.lowerAge, body.upperAge, body.Gender];
-	mysql.pool.query("INSERT INTO events(`title`, `description`, `address`, `city`, `state`, `zip`, `startDate`, `endDate`, `lowerAge`, `upperAge`, `gender`) VALUES (?,?,?,?,?,?,?,?,?,?,?)", params, function (err, result) {
-		if (err) {
-			throw err;
+	if (req.isAuthenticated()) {
+		var body = req.body;
+		var gender = "Both";
+		if (req.body.Gender == 0) {
+			gender = "Female";
 		}
-		res.redirect('/home')
-	});
+		else if (req.body.Gender == 1) {
+			gender = "Male";
+		}
+		var params = [body.eventTitle, body.eventDescription, body.eventAddress, body.eventCity, body.eventState, body.eventZIP, body.startDate, body.endDate, body.lowerAge, body.upperAge, body.Gender, req.session.passport.user];
+		console.log(params);
+		mysql.pool.query("INSERT INTO events(`title`, `description`, `address`, `city`, `state`, `zip`, `startDate`, `endDate`, `lowerAge`, `upperAge`, `gender`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", params, function (err, result) {
+			if (err) {
+				throw err;
+			}
+			res.redirect('/home')
+		});
+	} else {
+		console.log("is not authenticated")
+		res.render('login')
+	}
 });
 
 app.get('/view', function (req, res) {
-	var id = req.query.id;
-	var table = {};
-	table.values = [];
-	mysql.pool.query('SELECT * FROM events WHERE id = ?', id, function (err, rows, fields) {
-		if (err) {
-			throw err;
-		}
-		var startDate = moment(rows[0].startDate);
-		var endDate = moment(rows[0].endDate);
-		var Both = 0;
-		var Female = 0;
-		var Male = 0;
-		if (rows[0].gender == "Both") {
-			Both = 1;
-		}
-		if (rows[0].gender == "Female") {
-			Female = 1;
-		}
-		if (rows[0].gender == "Male") {
-			Male = 1;
-		}
-		console.log(Both, Female, Male);
-		table.values.push({ 'id': rows[0].id, 'title': rows[0].title, 'description': rows[0].description, 'address': rows[0].address, 'city': rows[0].city, 'state': rows[0].state, 'zip': rows[0].zip, 'startDate': startDate.format('YYYY-MM-DD'), 'endDate': endDate.format('YYYY-MM-DD'), 'upperAge': rows[0].upperAge, 'lowerAge': rows[0].lowerAge, 'both': Both, 'female': Female, 'male': Male });
-		res.render('view', table.values[0]);
-	})
+		var id = req.query.id;
+		var table = {};
+		table.values = [];
+		mysql.pool.query('SELECT * FROM events WHERE id = ?', id, function (err, rows, fields) {
+			if (err) {
+				throw err;
+			}
+			var startDate = moment(rows[0].startDate);
+			var endDate = moment(rows[0].endDate);
+			var Both = 0;
+			var Female = 0;
+			var Male = 0;
+			if (rows[0].gender == "Both") {
+				Both = 1;
+			}
+			if (rows[0].gender == "Female") {
+				Female = 1;
+			}
+			if (rows[0].gender == "Male") {
+				Male = 1;
+			}
+			var poster = 0;
+			if (rows[0].user_id == req.session.passport.user) {
+				poster = 1;
+			}
+			table.values.push({ 'event_id': rows[0].id, 'title': rows[0].title, 'description': rows[0].description, 'address': rows[0].address, 'city': rows[0].city, 'state': rows[0].state, 'zip': rows[0].zip, 'startDate': startDate.format('YYYY-MM-DD'), 'endDate': endDate.format('YYYY-MM-DD'), 'upperAge': rows[0].upperAge, 'lowerAge': rows[0].lowerAge, 'both': Both, 'female': Female, 'male': Male, 'poster': poster });
+			console.log("VIEW EVENT");
+			console.log(req.session.passport.user);
+			res.render('view', table.values[0]);
+		})
 });
 
 app.get('/update', function (req, res) {
