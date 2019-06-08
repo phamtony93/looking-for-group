@@ -1,142 +1,54 @@
-<div class="container">
-	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="/home">Looking For Group</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="/home">Home</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="/create-event">Create Event</a>
-				</li>
-			</ul>
-		</div>
-		<div class="collapse navbar-collapse" id="navbarNav">
-
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="#"> {{user.first_name}} {{user.last_name}}</a>
-				</li>
-				<li class="nav-item">
-					<button class="btn btn-sm btn-outline-secondary" style="margin-top:5px;" type="button"
-						onclick="document.location.href='/logout'">Logout</button>
-				</li>
-			</ul>
-		</div>
-	</nav>
+<div class="topnav p-3" align="right">
+    {{user.first_name}} {{user.last_name}}
+    <a href="/home"><button class="btn btn-primary" type="button">Home</button></a>
+    <button class="btn btn-primary" type="button">Profile</button>
+    <a href="/create-event"><button class="btn btn-primary" type="button">Create Event</button></a>
+  <input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
 </div>
-<div class="container">
-<h2>Update Event Details</h2>
-	<div class="form-group">
-		<label for="eventTitle">Event Title</label>
-		<input type="text" class="form-control" id="eventTitle" name="eventTitle" value="{{title}}">
-	</div>
 
-	<div class="form-group">
-		<label for="eventAddress">Address</label>
-		<input type="text" class="form-control" id="eventAddress" name="eventAddress" value="{{address}}">
-	</div>
-	<div class="form-row">
-		<div class="form-group col-md-6">
-			<label for="eventCity">City</label>
-			<input type="text" class="form-control" id="eventCity" name="eventCity" value="{{city}}">
-		</div>
-		<div class="form-group col-md-4">
-			<label for="eventState">State</label>
-			<select id="eventState" class="form-control" name="eventState" value="{{state}}">
-				<option selected>{{state}}</option>
-				<option>Alabama </option>
-				<option>Alaska </option>
-				<option>Arizona </option>
-				<option>Arkansas </option>
-				<option>California </option>
-				<option>Colorado </option>
-				<option>Connecticut </option>
-				<option>Delaware </option>
-				<option>Florida </option>
-				<option>Georgia </option>
-				<option>Hawaii </option>
-				<option>Idaho </option>
-				<option>Illinois</option>
-				<option>Indiana </option>
-				<option>Iowa </option>
-				<option>Kansas </option>
-				<option>Kentucky </option>
-				<option>Louisiana </option>
-				<option>Maine </option>
-				<option>Maryland </option>
-				<option>Massachusetts </option>
-				<option>Michigan </option>
-				<option>Minnesota </option>
-				<option>Mississippi </option>
-				<option>Missouri </option>
-				<option>Montana</option>
-				<option>Nebraska </option>
-				<option>Nevada </option>
-				<option>New Hampshire </option>
-				<option>New Jersey </option>
-				<option>New Mexico </option>
-				<option>New York </option>
-				<option>North Carolina </option>
-				<option>North Dakota </option>
-				<option>Ohio </option>
-				<option>Oklahoma </option>
-				<option>Oregon </option>
-				<option>Pennsylvania</option>
-				<option>Rhode Island </option>
-				<option>South Carolina </option>
-				<option>South Dakota </option>
-				<option>Tennessee </option>
-				<option>Texas </option>
-				<option>Utah </option>
-				<option>Vermont </option>
-				<option>Virginia </option>
-				<option>Washington </option>
-				<option>West Virginia </option>
-				<option>Wisconsin </option>
-				<option>Wyoming</option>
-			</select>
-		</div>
-		<div class="form-group col-md-2">
-			<label for="eventZIP">Zipcode</label>
-			<input type="text" class="form-control" id="eventZIP" name="eventZIP" value="{{zip}}">
-		</div>
-	</div>
-
-	<div class="form-row">
-		<div class="form-group col-md-6">
-			<label for="startDate">Start Date</label>
-			<input type="date" class="form-control" id="startDate" name="startDate" value="{{startDate}}">
-		</div>
-		<div class="form-group col-md-6">
-			<label for="endDate">End Date</label>
-			<input type="date" class="form-control" id="endDate" name="endDate" value="{{endDate}}">
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label for="eventDescription">Event Description</label>
-		<textarea class="form-control" id="eventDescription" rows="3" name="eventDescription" value="{{description}}">{{description}}</textarea>
-	</div>
-<h2>Event Specifications</h2>
-	<label>Age Range</label>
-	<div class="form-row">
-		<div class="form-group col-md-1">
-			<input type="number" class="form-control" id="lowerAge" name="lowerAge" min="0" max="100" value="{{lowerAge}}">
-		</div>
-		<label class="pt-2">to</label>
-		<div class="form-group col-md-1">
-			<input type="number" class="form-control" id="upperAge" name="upperAge" min="1" max="101" value="{{upperAge}}">
-		</div>
-	</div>
-
-	<div class="form-group">
-		<label for="gender">Gender</label>
-          <select class="form-control col-md-3" id="gender">
+<form>
+	<fieldset>
+    <legend>Update Event</legend>
+    	<div>
+          <input type="hidden"id="updateId" value="{{id}}">
+          <br>
+          <label>Event Title: </label>
+          <input type="text" name="eventTitle" id="eventTitle" value="{{title}}">
+          <br>
+          <br>
+          <label>Location</label>
+          <br>
+          <label>Address: </label>
+          <input type="text" name="eventAddress" id="eventAddress" value="{{address}}">
+          <label>City: </label>
+          <input type="text" name="eventCity" id="eventCity" value="{{city}}">
+          <label>State: </label>
+          <input type="text" name="eventState" id="eventState" value="{{state}}">
+          <label>ZIP: </label>
+          <input type="text" name="eventZIP" id="eventZIP" value="{{zip}}">
+          <br>
+          <br>
+          <label>Dates</label>
+          <br>
+          <label>Start: </label>
+          <input type="date" name="startDate" id="startDate" value="{{startDate}}">
+          <label>End: </label>
+          <input type="date" name="endDate" id="endDate" value="{{endDate}}">
+          <br>
+          <br>
+          <label>Description </label>
+          <input type="text" name="eventDescription" id="eventDescription" value="{{description}}">
+          <br>
+          <br>
+          <label>Specifications</label>
+          <br>
+          <label>Age From: </label>
+          <input type="number" name="lowerAge" id="lowerAge" value="{{lowerAge}}">
+          <label>Age To: </label>
+          <input type="number" name="upperAge" id="upperAge" value="{{upperAge}}">
+          <br>
+          <label>Gender:</label>
+          <select id="gender">
             {{#if both}}
               <option val="0">Female</option>
               <option val="1">Male</option>
@@ -153,7 +65,10 @@
               {{/if}}
             {{/if}}
           </select>
-	</div>
-	<button type="button" id="updateBtn" onclick="eventUpdate()" class="btn btn-primary">Update Event</button>
-</div>
+          <br><br>
+          <button type="button" onClick="eventUpdate()" id="updateBtn">Update Event</button>
+    	<div>
+	</fieldset>
+</form>
+
 <script type="text/javascript" src="/table.js"></script>
