@@ -1,49 +1,88 @@
-<div class="topnav p-3" align="right">
-    {{user.first_name}} {{user.last_name}}
-    <a href="/home"><button class="btn btn-primary" type="button">Home</button></a>
-    <button class="btn btn-primary" type="button">Profile</button>
-    <a href="/create-event"><button class="btn btn-primary" type="button">Create Event</button></a>
-  <input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
+<div class="container">
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="/home">Looking For Group</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/home">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/create-event">Create Event</a>
+				</li>
+			</ul>
+		</div>
+		<div class="collapse navbar-collapse" id="navbarNav">
+
+			<ul class="navbar-nav ml-auto">
+				{{!-- <span class="navbar-text mx-auto" style="width: 100px;">
+					{{user.first_name}} {{user.last_name}}
+				</span> --}}
+				<li class="nav-item">
+					<a class="nav-link" href="#"> {{user.first_name}} {{user.last_name}}</a>
+				</li>
+				<li class="nav-item">
+					<button class="btn btn-sm btn-outline-secondary" style="margin-top:5px;" type="button"
+						onclick="document.location.href='/logout'">Logout</button>
+				</li>
+			</ul>
+		</div>
+	</nav>
 </div>
 
-<table style="width:100%" id="eventTable" border="1" class="table">
-              <tr>
-                <th>{{title}}</th>
-              </tr>
-              <tr>
-                <td>ADDRESS: {{address}} {{city}} {{zip}}</td>
-              </tr>
-              <tr>
-                <td>START DATE: {{startDate}} to END DATE: {{endDate}}</td>
-              </tr>
-              <tr>
-                <td>DESCRIPTION: {{description}}</td>
-              </tr>
-              <tr>
-                <td>AGE RANGE: {{lowerAge}} to {{upperAge}}</td>
-              </tr>
-              <tr>
-                <td> GENDER: {{#if both}}Both{{else}}{{#if male}}Male{{else}}Female{{/if}}{{/if}}</td>
-              </tr>
-              <tr><td>{{#if poster}}<form id="{{event_id}}"><button type="button" onClick="updateRow(this)">Update</button></form>{{else}}<form id="{{event_id}}"><button type="button" onClick="joinRow(this)">Request to Join</button></form>{{/if}}
-                </td>
-              </tr>
-            </table>
+
+<div class="container">
+	<h2>Event Details</h2>
+	<table class="table" id="eventTable">
+			<tr>
+		<th>{{title}}</th>
+	</tr>
+	<tr>
+		<td>Location: {{address}} {{city}} {{zip}}</td>
+	</tr>
+	<tr>
+		<td>Start Date: {{startDate}} to End Date: {{endDate}}</td>
+	</tr>
+	<tr>
+		<td>Event Description: {{description}}</td>
+	</tr>
+	<tr>
+		<td>Age Range: {{lowerAge}} to {{upperAge}}</td>
+	</tr>
+	<tr>
+		<td> Gender: {{#if both}}Both{{else}}{{#if male}}Male{{else}}Female{{/if}}{{/if}}</td>
+	</tr>
+	<tr>
+		<td>{{#if poster}}<form id="{{event_id}}"><button class="btn btn-primary" type="button" onClick="updateRow(this)">Update</button></form>
+			{{else}}<form id="{{event_id}}"><button class="btn btn-primary" type="button" onClick="joinRow(this)">Request to Join</button>
+			</form>{{/if}}
+		</td>
+	</tr>
+	</table>
+</div>
 
 {{#if poster}}
-<div>Event Requests</div>
-<table style="width:100%" id="requestTable" border="1" class="table">
-  <tr>
-    <th>User</th>
-    <th>Actions</th>
-  </tr>
-{{#each requests}}
-  <tr>
-    <td>{{this.user_id}}</td>
-    <td><a href="/accept_deny?user_id={{this.user_id}}&event_id={{event_id}}&accept=1"><button class="btn btn-primary" type="button">Accept</button></a><a href="/accept_deny?user_id={{this.user_id}}&event_id={{event_id}}&accept=0"><button class="btn btn-primary" type="button">Deny</button></a></td>
-  </tr>
-{{/each}}
+<div class="container">
+	<h2>Event Requests</h2>
+<table class="table" id="requestTable">
+	<tr>
+		<th>User</th>
+		<th>Actions</th>
+	</tr>
+	{{#each requests}}
+	<tr>
+		<td>{{this.user_id}}</td>
+		<td><a href="/accept_deny?user_id={{this.user_id}}&event_id={{event_id}}&accept=1"><button
+					class="btn btn-primary" type="button">Accept</button></a><a
+				href="/accept_deny?user_id={{this.user_id}}&event_id={{event_id}}&accept=0"><button
+					class="btn btn-primary" type="button">Deny</button></a></td>
+	</tr>
+	{{/each}}
 </table>
 {{/if}}
+</div>
 
 <script type="text/javascript" src="/table.js"></script>

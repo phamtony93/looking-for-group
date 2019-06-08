@@ -1,56 +1,75 @@
-<div class="topnav p-3" align="right">
-		{{user.first_name}} {{user.last_name}}
-    <a href="/home"><button class="btn btn-primary" type="button">Home</button></a>
-    <button class="btn btn-primary" type="button">Profile</button>
-    <a href="/create-event"><button class="btn btn-primary" type="button">Create Event</button></a>
-	<input type="button" value="Log Out" class="btn" , onclick="document.location.href='/logout'" />
-</div>
-
-		<form>
-			<div class="container p-5">
-				<div class="row">
-						<input type="text" class="form-control col-sm-11" type="search" placeholder="Search" align="center" name="search">
-						<button class="btn-outline-secondary col-sm-1" type="submit">Search</button>
-				</div>
-			</div>
-		</form>
-
-
 <div class="container">
-	<div class="row">
-		<div class="col-md-11">
-			{{!-- <div class="container">
-				<div class="row">
-					<div class="col"> --}}
-						<table style="width:100%" id="eventTable" border="1" class="table">
-							<tr>
-								<th>Created Events</th>
-							</tr>
-							{{#each values}}
-							<tr>
-								<td>{{this.title}}</td>
-								<td>
-									<form id="{{this.id}}"><button type="button" onClick="viewRow(this)">View</button></form>
-								</td>
-							</tr>
-							{{/each}}
-						</table>
-					{{!-- </div>
-				</div>
-			</div> --}}
+	<nav class="navbar navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
+		<a class="navbar-brand" href="/home">Looking For Group</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="/home">Home</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/create-event">Create Event</a>
+				</li>
+			</ul>
 		</div>
-	</div>
+		<div class="collapse navbar-collapse" id="navbarNav">
+
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#"> {{user.first_name}} {{user.last_name}}</a>
+				</li>
+				<li class="nav-item">
+					<button class="btn btn-sm btn-outline-secondary" style="margin-top:5px;" type="button"
+						onclick="document.location.href='/logout'">Logout</button>
+				</li>
+			</ul>
+		</div>
+	</nav>
+</div>
+<div class="container">
+	<form>
+		<div class="form-group mx-auto pt-5 input-group">
+			<input class="form-control input-lg" type="search" placeholder="Search for events by keywords or tags"
+				aria-label="Search" name="search">
+			<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+		</div>
+	</form>
+</div>
+
+<div class="container pb-5">
+	<label class="form-inline">Filter by Location</label>
+	<form class="form-inline">
+		<label class="px-2">City</label>
+		<input class="form-control px-2" type="text" name="city"><br>
+		<label class="px-2">State</label>
+		<input class="form-control px-2" type="text" name="state"><br>
+		<button class="btn btn-outline-success pl-3" type="submit">Filter</button>
+	</form>
 </div>
 
 <div class="container">
-	<h6 align="left">Filter by Location</h6>
-	<form align="left">
-	<label>City</label>
-	<input type="text" name="city"><br>
-	<label>State</label>
-	<input type="text" name="state"><br>
-	<input type="submit" value="Filter">
-	</form>	
+	<table class="table table-hover" id="eventTable">
+		<thead>
+			<tr>
+				<th scope="col">Event Title</th>
+				<th scope="col">View Event</th>
+			</tr>
+		</thead>
+		<tbody>
+			{{#each values}}
+			<tr>
+				<td>{{this.title}}</td>
+				<td>
+					<form id="{{this.id}}"><button class="btn btn-primary" type="button" onClick="viewRow(this)">View</button></form>
+				</td>
+			</tr>
+			{{/each}}
+		</tbody>
+	</table>
 </div>
+
 
 <script type="text/javascript" src="/table.js"></script>

@@ -1,7 +1,6 @@
 // NPM modules
 const express = require('express');
 const passport = require('passport');
-// const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const LocalStrategy = require('passport-local').Strategy;
@@ -132,15 +131,6 @@ app.get('/logout', function (req, res) {
 	res.redirect('/');
 });
 
-// app.get('/home', (req, res) => {
-// 	if(req.isAuthenticated()) {
-
-// 		res.render('home')
-// 	} else {
-// 		res.render('login')
-// 	}
-// })
-
 app.get('/home', (req, res) => {
 	if (req.isAuthenticated()) {
 		// get user info
@@ -197,7 +187,6 @@ app.get('/home', (req, res) => {
 		res.render('login');
 	}
 })
-
 
 app.get('/create-event', (req, res) => {
 	console.log(req.session)
@@ -404,25 +393,6 @@ app.post('/registration', (req, res) => {
 })
 
 app.use('/registration', require('./registration.js'));
-
-// app.get('/account', ensureAuthenticated, function (req, res) {
-// 	res.render('account', { user: req.user });
-// });
-
-// app.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
-
-// app.get('/auth/facebook/callback',
-// 	passport.authenticate('facebook', { successRedirect: '/', failureRedirect: '/login' }),
-// 	function (req, res) {
-// 		res.redirect('/');
-// 	});
-
-
-
-// function ensureAuthenticated(req, res, next) {
-// 	if (req.isAuthenticated()) { return next(); }
-// 	res.redirect('/login')
-// }
 
 app.use(function (req, res) {
 	res.status(404);
