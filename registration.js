@@ -7,12 +7,6 @@ module.exports = function() {
 		var context = {};
 		var mysql = req.app.get('mysql');
 		res.render('registration', context);
-		// function complete() {
-		// 	callbackCount++;
-		// 	if (callbackCount >= 0) {
-		// 		res.render('registration', context);
-		// 	}
-		// }
 	});
 
 	return router; 

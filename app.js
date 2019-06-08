@@ -1,7 +1,6 @@
 // NPM modules
 const express = require('express');
 const passport = require('passport');
-// const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const LocalStrategy = require('passport-local').Strategy;
@@ -77,20 +76,6 @@ app.use(session({
 }))
 app.use(passport.initialize());
 app.use(passport.session());
-
-// app.use(cookieParser());
-// app.set('port', 33335);
-//app.set('mysql', mysql);
-
-// app.use(session({
-// 	secret: 'keyboard cat',
-// 	key: 'sid',
-// 	resave: true,
-// 	saveUninitialized: true
-// }));
-// app.use(passport.initialize());
-// app.use(passport.session());
-
 
 // Setting up routes
 app.get('/', (req, res) => {
