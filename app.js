@@ -1,6 +1,7 @@
 // NPM modules
 const express = require('express');
 const passport = require('passport');
+// const cookieParser = require('cookie-parser')
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
 const LocalStrategy = require('passport-local').Strategy;
@@ -10,12 +11,6 @@ const moment = require('moment');
 
 // Mysql DB connection
 var mysql = require('./dbcon.js');
-
-// Used for fb auth - wip
-// var config = require('./config')
-// const FacebookStrategy = require('passport-facebook').Strategy
-
-
 
 // Passport.js setup for local strategy
 passport.use(new LocalStrategy(
@@ -63,7 +58,7 @@ passport.deserializeUser((id, done) => {
 // Create server
 const app = express();
 app.use(express.static(__dirname + '/public'));
-var port = 5861;
+var port = 5862;
 app.set('port', port);
 app.listen(app.get('port'), function () {
 	console.log('Express started on flip1.engr.oregonstate.edu:' + app.get('port') + '; press CTRL + C to terminate')
@@ -188,6 +183,7 @@ app.get('/home', (req, res) => {
 	}
 })
 
+
 app.get('/create-event', (req, res) => {
 	console.log(req.session)
 	console.log("GET create-event")
@@ -226,16 +222,10 @@ app.get('/create-event', (req, res) => {
 
 app.post('/add', function (req, res) {
 	if (req.isAuthenticated()) {
+		console.log("GENDER");
+		console.log(req.body.gender);
 		var body = req.body;
-		var gender = "Both";
-		if (req.body.Gender == 0) {
-			gender = "Female";
-		}
-		else if (req.body.Gender == 1) {
-			gender = "Male";
-		}
-		var params = [body.eventTitle, body.eventDescription, body.eventAddress, body.eventCity, body.eventState, body.eventZIP, body.startDate, body.endDate, body.lowerAge, body.upperAge, body.Gender, req.session.passport.user];
-		console.log(params);
+		var params = [body.eventTitle, body.eventDescription, body.eventAddress, body.eventCity, body.eventState, body.eventZIP, body.startDate, body.endDate, body.lowerAge, body.upperAge, req.body.gender, req.session.passport.user];
 		mysql.pool.query("INSERT INTO events(`title`, `description`, `address`, `city`, `state`, `zip`, `startDate`, `endDate`, `lowerAge`, `upperAge`, `gender`, `user_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)", params, function (err, result) {
 			if (err) {
 				throw err;
